@@ -1,4 +1,4 @@
-# Netatmo Switch Adapter
+# Netatmo Energy Adapter
 
 Netatmo Energy adapter for the [Mozilla IoT gateway](https://iot.mozilla.org).
 
