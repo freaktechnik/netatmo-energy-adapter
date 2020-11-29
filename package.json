@@ -1,0 +1,26 @@
+{
+  "name": "netatmo-energy-adapter",
+  "version": "0.0.1",
+  "description": "Netatmo Energy Adapter for WebThings Gateway",
+  "author": "Michael Kohler <me@michaelkohler.info>",
+  "main": "index.js",
+  "scripts": {
+    "build": "shasum --algorithm 256 manifest.json package.json *.js LICENSE README.md > SHA256SUMS && find node_modules \\( -type f -o -type l \\) -exec shasum --algorithm 256 {} \\; >> SHA256SUMS"
+  },
+  "homepage": "https://github.com/MichaelKohler/netatmo-energy-adapter",
+  "license": "MPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MichaelKohler/netatmo-energy-adapter.git"
+  },
+  "dependencies": {
+    "netatmo": "^2.3.0"
+  },
+  "files": [
+    "index.js",
+    "manifest.json",
+    "package.json",
+    "netatmo-energy-adapter.js",
+    "SHA256SUMS"
+  ]
+}

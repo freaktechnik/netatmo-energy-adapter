@@ -1,0 +1,43 @@
+{
+  "author": "Michael Kohler",
+  "description": "Adapter for the WebThings Gateway to show and control Netatmo Thermostats",
+  "gateway_specific_settings": {
+    "webthings": {
+      "exec": "{nodeLoader} {path}",
+      "primary_type": "adapter",
+      "strict_max_version": "*",
+      "strict_min_version": "0.10.0"
+    }
+  },
+  "homepage_url": "https://github.com/MichaelKohler/netatmo-energy-adapter",
+  "id": "netatmo-energy-adapter",
+  "license": "MPL-2.0",
+  "manifest_version": 1,
+  "name": "Netatmo Energy Adapter",
+  "short_name": "Netatmo Energy",
+  "version": "0.0.1",
+  "options": {
+    "schema": {
+      "type": "object",
+      "title": "Login to your Netatmo Smart Home",
+      "properties": {
+        "client_id": {
+          "type": "string",
+          "title": "API Client ID"
+        },
+        "client_secret": {
+          "type": "string",
+          "title": "API Client Secret"
+        },
+        "username": {
+          "type": "string",
+          "title": "Username"
+        },
+        "password": {
+          "type": "string",
+          "title": "Password"
+        }
+      }
+    }
+  }
+}

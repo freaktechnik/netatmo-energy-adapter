@@ -1,0 +1,7 @@
+*.swp
+*.tgz
+*~
+/node_modules/
+.DS_Store
+*.sha256sum
+SHA256SUMS
