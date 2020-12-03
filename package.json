@@ -1,6 +1,6 @@
 {
   "name": "netatmo-energy-adapter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Netatmo Energy Adapter for WebThings Gateway",
   "author": "Michael Kohler <me@michaelkohler.info>",
   "main": "index.js",
