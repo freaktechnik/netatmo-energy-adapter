@@ -121,7 +121,7 @@ class RoomDevice extends Device {
 
 class NetatmoEnergyAdapter extends Adapter {
   constructor(addonManager, manifest, reportError) {
-    super(addonManager, 'NetatmoEnergyAdapter', manifest.id);
+    super(addonManager, 'NetatmoEnergyAdapter', manifest.name);
     const config = manifest.moziot.config;
 
     try {
