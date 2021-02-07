@@ -13,9 +13,9 @@
   "id": "netatmo-energy-adapter",
   "license": "MPL-2.0",
   "manifest_version": 1,
-  "name": "Netatmo Energy Adapter",
-  "short_name": "Netatmo Energy",
-  "version": "0.0.3",
+  "name": "Netatmo Energy",
+  "short_name": "Netatmo ⚡",
+  "version": "0.0.4",
   "options": {
     "schema": {
       "type": "object",
