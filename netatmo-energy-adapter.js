@@ -7,6 +7,9 @@ const {
 } = require('gateway-addon');
 const Netatmo = require('netatmo');
 
+const config = require('./config');
+const manifest = require('./manifest.json');
+
 const AVAILABLE_TYPES = [
   'NRV',
 ];
@@ -120,16 +123,20 @@ class RoomDevice extends Device {
 }
 
 class NetatmoEnergyAdapter extends Adapter {
-  constructor(addonManager, manifest, reportError) {
-    super(addonManager, 'NetatmoEnergyAdapter', manifest.name);
-    const config = manifest.moziot.config;
+  constructor(addonManager) {
+    super(addonManager, 'NetatmoEnergyAdapter', manifest.id);
+    this.init(addonManager, manifest.id);
+  }
+
+  async init(addonManager, manifestId) {
+    const fullConfig = await config.load(manifestId);
 
     try {
-      this.netatmo = new Netatmo(config);
+      this.netatmo = new Netatmo(fullConfig);
     } catch(error) {
         console.warn(error);
         this.netatmo = undefined;
-        reportError(packageName, "Netatmo API credentials are not valid. Please provide credentials in the add-on settings.");
+        console.error("Netatmo API credentials are not valid. Please provide credentials in the add-on settings.");
         return;
     }
 

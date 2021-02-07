@@ -15,7 +15,7 @@
   "manifest_version": 1,
   "name": "Netatmo Energy Adapter",
   "short_name": "Netatmo Energy",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "options": {
     "schema": {
       "type": "object",
