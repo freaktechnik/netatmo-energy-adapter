@@ -14,7 +14,7 @@
     "url": "https://github.com/MichaelKohler/netatmo-energy-adapter.git"
   },
   "dependencies": {
-    "netatmo": "^2.3.0"
+    "netatmo": "^2.4.0"
   },
   "files": [
     "index.js",
