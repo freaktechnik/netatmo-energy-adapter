@@ -6,7 +6,7 @@
       "exec": "{nodeLoader} {path}",
       "primary_type": "adapter",
       "strict_max_version": "*",
-      "strict_min_version": "0.10.0"
+      "strict_min_version": "1.0.0"
     }
   },
   "homepage_url": "https://github.com/MichaelKohler/netatmo-energy-adapter",
@@ -15,29 +15,40 @@
   "manifest_version": 1,
   "name": "Netatmo Energy",
   "short_name": "Netatmo ⚡",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "options": {
     "schema": {
       "type": "object",
-      "title": "Login to your Netatmo Smart Home",
+      "title": "Your Netatmo Smart Home app (dev.netatmo.com)",
       "properties": {
         "client_id": {
           "type": "string",
-          "title": "API Client ID"
+          "title": "Netatmo API Client ID"
         },
         "client_secret": {
           "type": "string",
-          "title": "API Client Secret"
+          "title": "Netatmo API Client Secret"
         },
-        "username": {
+        "baseUrl": {
           "type": "string",
-          "title": "Username"
-        },
-        "password": {
-          "type": "string",
-          "title": "Password"
+          "title": "Base URL of your gateway, for example http://192.168.0.2:8080"
         }
       }
     }
-  }
+  },
+  "content_scripts": [
+    {
+      "css": [
+        "src/views/styles.css"
+      ],
+      "js": [
+        "src/extension.js"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    "src/extension.js",
+    "src/views/*.css",
+    "src/views/*.html"
+  ]
 }

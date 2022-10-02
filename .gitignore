@@ -5,3 +5,5 @@
 .DS_Store
 *.sha256sum
 SHA256SUMS
+
+token-info.json
