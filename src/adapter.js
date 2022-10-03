@@ -14,7 +14,7 @@ const {
   Property,
 } = require('gateway-addon');
 
-const Netatmo = require('./src/netatmo');
+const Netatmo = require('./netatmo');
 
 const AVAILABLE_TYPES = [
   'NRV',
@@ -185,9 +185,11 @@ class NetatmoEnergyAdapter extends Adapter {
 
       // The listener will get triggered from the APIHandler and will resolve its success
       // promise once the callback route got called.
+      // TODO: this probably should have a timeout integrated and reject at some point
       console.log('Waiting for user to auth on Netatmo...');
       const result = await listener.successPromise;
       console.log('Received auth callback!');
+      this.apiHandler.removeListener(listener);
       await iterable.next(result);
 
       await this.postAuth();

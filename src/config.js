@@ -13,14 +13,19 @@ module.exports = {
 };
 
 async function addToConfig(packageName, config) {
-  const database = new Database(packageName);
-  await database.open();
+  try {
+    const database = new Database(packageName);
+    await database.open();
 
-  const existingConfig = database.loadConfig();
-  const mergedConfig = {
-    ...existingConfig,
-    ...config,
-  };
+    const existingConfig = await database.loadConfig();
+    const mergedConfig = {
+      ...existingConfig,
+      ...config,
+    };
 
-  await database.saveConfig(mergedConfig);
+    await database.saveConfig(mergedConfig);
+    await database.close();
+  } catch (error) {
+    console.error('SAVING_CONFIG_FAILED', error);
+  }
 }
