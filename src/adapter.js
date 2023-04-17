@@ -84,7 +84,7 @@ class RoomDevice extends Device {
 
   addModule(module) {
     const newProperties = {
-      [`${module.id}-signal`]: {
+      signal: {
         title: `${module.name} - Signal`,
         type: 'integer',
         unit: 'percent',
@@ -93,7 +93,7 @@ class RoomDevice extends Device {
         multipleOf: 1,
         readOnly: true,
       },
-      [`${module.id}-battery`]: {
+      battery: {
         title: `${module.name} - Battery`,
         type: 'integer',
         unit: 'percent',
@@ -294,8 +294,8 @@ class NetatmoEnergyAdapter extends Adapter {
 
         const deviceId = `${home.id}-${this.moduleMapping[module.id]}`;
         const device = this.devices[deviceId];
-        device.updateProperty(`${module.id}-battery`, interpolateBattery(module.battery_level, module.type));
-        device.updateProperty(`${module.id}-signal`, mapRfToPercent(module.rf_strength));
+        device.updateProperty('battery', interpolateBattery(module.battery_level, module.type));
+        device.updateProperty('signal', mapRfToPercent(module.rf_strength));
       });
     });
   }
