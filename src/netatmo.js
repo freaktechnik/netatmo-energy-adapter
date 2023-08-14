@@ -51,6 +51,7 @@ class Netatmo {
 
     if (!response.ok || response.status !== 200) {
       console.error('Failed to refresh token.');
+      this.config.token = '';
       return;
     }
 
