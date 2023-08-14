@@ -29,6 +29,13 @@ class Netatmo {
     }
   }
 
+  updateConfig() {
+    return addToConfig(this.packageName, {
+      expires: this.config.expires,
+      refresh_token: this.config.refresh_token,
+    });
+  }
+
   async refresh() {
     delete this.refreshInterval;
     this.config.token = '';
@@ -52,6 +59,8 @@ class Netatmo {
     if (!response.ok || response.status !== 200) {
       console.error('Failed to refresh token.');
       this.config.token = '';
+      this.config.refresh_token = '';
+      await updateConfig();
       return;
     }
 
@@ -59,18 +68,13 @@ class Netatmo {
     this.config.token = data.access_token;
     this.config.expires = Date.now() + (data.expires_in * 1000);
     this.config.refresh_token = data.refresh_token;
-
-    await addToConfig(this.packageName, {
-      token: this.config.token,
-      expires: this.config.expires,
-      refresh_token: this.config.refresh_token,
-    });
+    await this.updateConfig();
 
     this.initRefresh();
   }
 
   get needsAuth() {
-    return !this.config.token;
+    return !this.config.refresh_token;
   }
 
   unInit() {
@@ -108,12 +112,7 @@ class Netatmo {
     this.config.expires = Date.now() + (tokenData.expires_in * 1000);
     this.config.token = tokenData.access_token;
     this.config.refresh_token = tokenData.refresh_token;
-
-    await addToConfig(this.packageName, {
-      token: this.config.token,
-      expires: this.config.expires,
-      refresh_token: this.config.refresh_token,
-    });
+    await this.updateConfig();
 
     this.initRefresh();
   }
