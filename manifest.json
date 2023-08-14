@@ -15,7 +15,7 @@
   "manifest_version": 1,
   "name": "Netatmo Energy",
   "short_name": "Netatmo ⚡",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "options": {
     "schema": {
       "type": "object",
