@@ -60,7 +60,7 @@ class Netatmo {
       console.error('Failed to refresh token.');
       this.config.token = '';
       this.config.refresh_token = '';
-      await updateConfig();
+      await this.updateConfig();
       return;
     }
 
