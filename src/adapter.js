@@ -131,9 +131,8 @@ class RoomDevice extends Device {
 }
 
 class NetatmoEnergyAdapter extends Adapter {
-  constructor(addonManager, manifest, reportError) {
+  constructor(addonManager, manifest) {
     super(addonManager, 'NetatmoEnergyAdapter', manifest.name);
-    this.reportError = reportError;
     this.manifest = manifest;
     this.config = manifest.moziot.config;
     this.init(addonManager);
@@ -148,17 +147,27 @@ class NetatmoEnergyAdapter extends Adapter {
     this.devices = {};
     this.moduleMapping = {};
 
+    console.log('Checking if authentication is required: ', this.netatmo.needsAuth);
     if (!this.netatmo.needsAuth) {
       this.postAuth();
     }
   }
 
   async postAuth() {
+    console.log('Creating devices...');
     try {
       await this.createDevices();
     } catch (error) {
-      console.error('DEVICE_CREATION_FAILED', error);
-      this.reportError('Netatmo Energy Devices could not be created.');
+      console.error('Creating devices failed:', error);
+
+      // If the creation failed, we need to try again later. Otherwise subsequent
+      // operations depending on the devices will fail. This would be the case until
+      // the adapter is restarted, as the devices would never be recreated.
+      // This can happen when the token is expired when the adapter is starting up.
+      // In that case we want to wait a bit until the automatic refresh has happened,
+      // and then try again. We do not need to refresh the token here, as that is handled
+      // internally.
+      setTimeout(() => this.postAuth(), 10000);
       return;
     }
 
@@ -266,8 +275,7 @@ class NetatmoEnergyAdapter extends Adapter {
     try {
       await this.createDevices();
     } catch (error) {
-      console.error('DEVICE_CREATION_FAILED', error);
-      this.reportError('Netatmo Energy Devices could not be created.');
+      console.error('Creating devices failed:', error);
       return;
     }
   }

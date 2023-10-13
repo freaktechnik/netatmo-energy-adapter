@@ -23,6 +23,7 @@ class Netatmo {
   initRefresh() {
     const expiresIn = (this.config.expires || Date.now()) - Date.now();
     if (expiresIn > 0 && this.config.token) {
+      console.log('Token still valid for:', expiresIn);
       this.refreshInterval = setTimeout(() => this.refresh(), expiresIn);
     } else {
       this.refresh();
@@ -37,6 +38,7 @@ class Netatmo {
   }
 
   async refresh() {
+    console.log('Starting token refresh');
     delete this.refreshInterval;
     this.config.token = '';
 
@@ -45,6 +47,7 @@ class Netatmo {
       return;
     }
 
+    console.log('Refreshing netatmo token using existing refresh token.');
     const body = new URLSearchParams();
     body.append('grant_type', 'refresh_token');
     body.append('refresh_token', this.config.refresh_token);
@@ -68,6 +71,7 @@ class Netatmo {
     this.config.token = data.access_token;
     this.config.expires = Date.now() + (data.expires_in * 1000);
     this.config.refresh_token = data.refresh_token;
+    console.log('Refreshed token until:', new Date(this.config.expires).toISOString());
     await this.updateConfig();
 
     this.initRefresh();
@@ -119,7 +123,7 @@ class Netatmo {
 
   async getHomeData(homeId) {
     if (!this.config.token) {
-      throw new Error("Unauthorized");
+      throw new Error("No token found");
     }
 
     const body = new URLSearchParams();
@@ -136,9 +140,12 @@ class Netatmo {
       }
     });
 
+    console.log('Got response for Home Data', response.ok, response.status);
     if (!response.ok || response.status !== 200) {
       if (response.status === 403) {
         this.config.token = '';
+        this.refresh();
+        throw new Error('Unauthorized');
       }
 
       return [];
@@ -155,7 +162,7 @@ class Netatmo {
 
   async getHomeStatus(homeId) {
     if (!this.config.token) {
-      throw new Error("Unauthorized");
+      throw new Error("No token found");
     }
 
     const body = new URLSearchParams();
@@ -172,9 +179,12 @@ class Netatmo {
       }
     });
 
+    console.log('Got response for Home Status', response.ok, response.status);
     if (!response.ok || response.status !== 200) {
       if (response.status === 403) {
         this.config.token = '';
+        this.refresh();
+        throw new Error('Unauthorized');
       }
 
       return [];
@@ -187,7 +197,7 @@ class Netatmo {
 
   async setRoomThermPoint({ homeId, roomId, mode, temp }) {
     if (!this.config.token) {
-      throw new Error("Unauthorized");
+      throw new Error("No token found");
     }
 
     const body = new URLSearchParams();
@@ -216,9 +226,12 @@ class Netatmo {
       }
     });
 
+    console.log('Got response for Set Room Therm Point', response.ok, response.status);
     if (!response.ok || response.status !== 200) {
       if (response.status === 403) {
         this.config.token = '';
+        this.refresh();
+        throw new Error('Unauthorized');
       }
 
       return [];
@@ -231,7 +244,7 @@ class Netatmo {
 
   async setThermostatMode({ homeId, mode }) {
     if (!this.config.token) {
-      throw new Error("Unauthorized");
+      throw new Error("No token found");
     }
 
     const body = new URLSearchParams();
@@ -252,9 +265,12 @@ class Netatmo {
       }
     });
 
+    console.log('Got response for Set Therm Mode', response.ok, response.status);
     if (!response.ok || response.status !== 200) {
       if (response.status === 403) {
         this.config.token = '';
+        this.refresh();
+        throw new Error('Unauthorized');
       }
 
       return [];

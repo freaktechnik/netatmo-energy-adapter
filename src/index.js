@@ -8,6 +8,6 @@
 
 const NetatmoEnergyAdapter = require('./adapter');
 
-module.exports = (addonManager, manifest, reportError) => {
-  new NetatmoEnergyAdapter(addonManager, manifest, reportError);
+module.exports = (addonManager, manifest) => {
+  new NetatmoEnergyAdapter(addonManager, manifest);
 };
