@@ -18,6 +18,7 @@ const Netatmo = require('./netatmo');
 
 const AVAILABLE_TYPES = [
   'NRV',
+  'NAC',
 ];
 const DEVICE_PREFIX = 'thermostat-room-';
 
