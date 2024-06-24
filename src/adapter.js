@@ -94,7 +94,9 @@ class RoomDevice extends Device {
         multipleOf: 1,
         readOnly: true,
       },
-      battery: {
+    };
+    if (module.type !== "NAC") {
+      newProperties.battery = {
         title: `${module.name} - Battery`,
         type: 'integer',
         unit: 'percent',
@@ -102,8 +104,8 @@ class RoomDevice extends Device {
         maximum: 100,
         multipleOf: 1,
         readOnly: true,
-      },
-    };
+      };
+    }
 
     for (const propertyName in newProperties) {
       const propertyDescription = newProperties[propertyName];
@@ -289,9 +291,11 @@ class NetatmoEnergyAdapter extends Adapter {
       homeStatusData.rooms.forEach((room) => {
         const deviceId = `${home.id}-${room.id}`;
         const device = this.devices[deviceId];
+        const isHeating = room.heating_power_request > 0;
+        const isCooling = room.cooling_setpoint_mode && room.cooling_setpoint_mode !== 'off';
         device.updateProperty('temperature', room.therm_measured_temperature);
-        device.updateProperty('targetTemperature', room.therm_setpoint_temperature);
-        device.updateProperty('heating', room.heating_power_request > 0 ? 'heating' : 'off');
+        device.updateProperty('targetTemperature', isHeating ? room.therm_setpoint_temperature : room.cooling_setpoint_temperature);
+        device.updateProperty('heating', isHeating ? 'heating' : (isCooling ? 'cooling' : 'off'));
       });
 
       homeStatusData.modules.forEach((module) => {
@@ -301,7 +305,9 @@ class NetatmoEnergyAdapter extends Adapter {
 
         const deviceId = `${home.id}-${this.moduleMapping[module.id]}`;
         const device = this.devices[deviceId];
-        device.updateProperty('battery', interpolateBattery(module.battery_level, module.type));
+        if (module.type !== "NAC") {
+          device.updateProperty('battery', interpolateBattery(module.battery_level, module.type));
+        }
         device.updateProperty('signal', mapRfToPercent(module.rf_strength));
       });
     });
